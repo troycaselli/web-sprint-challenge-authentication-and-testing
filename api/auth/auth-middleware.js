@@ -25,7 +25,7 @@ const checkUniqueUsername = async (req, res, next) => {
 const checkValidCredentials = async (req, res, next) => {
     const {username, password} = req.body
     const user = await db('users').where({username}).first()
-    if(bcryptjs.compareSync(password, user.password)) {
+    if(user && bcryptjs.compareSync(password, user.password)) {
         req.user = user
         next()
     } else {
