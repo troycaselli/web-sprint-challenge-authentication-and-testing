@@ -1,3 +1,5 @@
+const bcryptjs = require('bcryptjs');
+
 const db = require('../../data/dbConfig');
 
 const checkCredentialsExist = (req, res, next) => {
@@ -22,11 +24,12 @@ const checkUniqueUsername = async (req, res, next) => {
 
 const checkValidCredentials = async (req, res, next) => {
     const {username, password} = req.body
-    const match = await db('users').where({username, password}).first()
-    if(!match) {
-        next({status: 400, message: 'invalid credentials'})
-    } else {
+    const user = await db('users').where({username}).first()
+    if(bcryptjs.compareSync(password, user.password)) {
+        req.user = user
         next()
+    } else {
+        next({status: 400, message: 'invalid credentials'})
     }
 }
 

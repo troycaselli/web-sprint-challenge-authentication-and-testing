@@ -52,7 +52,9 @@ router.post(
   mid.checkCredentialsExist, 
   mid.checkValidCredentials, 
   (req, res) => {
-  res.end('implement login, please!');
+  console.log(req.user)
+
+
   /*
     IMPLEMENT
     You are welcome to build additional middlewares to help with the endpoint's functionality.
