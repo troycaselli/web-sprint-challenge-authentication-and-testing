@@ -3,7 +3,8 @@ const bcryptjs = require('bcryptjs');
 
 const Users = require('./auth-model')
 const mid = require('./auth-middleware');
-const {BCRYPT_ROUNDS, JWT_SECRET} = require('../secrets')
+const {BCRYPT_ROUNDS} = require('../secrets');
+const {generateToken} = require('../utils/generateToken');
 
 router.post(
   '/register', 
@@ -52,7 +53,12 @@ router.post(
   mid.checkCredentialsExist, 
   mid.checkValidCredentials, 
   (req, res) => {
-  console.log(req.user)
+
+  const token = generateToken(req.user)
+  res.status(200).json({
+    message: `welcome, ${req.user.username}`,
+    token: token
+  })
 
 
   /*
