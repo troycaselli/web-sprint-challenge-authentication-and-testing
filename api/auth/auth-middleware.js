@@ -20,8 +20,14 @@ const checkUniqueUsername = async (req, res, next) => {
     }
 }
 
-const checkValidCredentials = (req, res, next) => {
-    next()
+const checkValidCredentials = async (req, res, next) => {
+    const {username, password} = req.body
+    const match = await db('users').where({username, password}).first()
+    if(!match) {
+        next({status: 400, message: 'invalid credentials'})
+    } else {
+        next()
+    }
 }
 
 module.exports = {
