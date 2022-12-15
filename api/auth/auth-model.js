@@ -1,7 +1,7 @@
 const db = require('../../data/dbConfig')
 
 function getById(id) {
-    return db('users').where({id})
+    return db('users').where({id}).first()
 }
 
 async function insert(newUser) {
